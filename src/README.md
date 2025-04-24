@@ -4,6 +4,10 @@ Foundry is a smart contract development toolchain.
 
 Foundry manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command-line and via Solidity scripts.
 
+> ✨ **Announcements**
+>
+> [Stay up to date](./announcements.md) with the latest changes to Foundry.
+
 > 📖 **Contributing**
 >
 > You can contribute to this book on [GitHub](https://github.com/foundry-rs/book).
@@ -46,16 +50,17 @@ Guides on configuring Foundry.
 - [Integrating with Hardhat](./config/hardhat.md)
 - [Vyper support](./config/vyper.md)
 
-**Tutorials**
+**Guides**
 
-Tutorials on building smart contracts with Foundry.
+Guides for building smart contracts with Foundry.
 
-- [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
-- [Docker and Foundry](./tutorials/foundry-docker.md)
-- [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
-- [Solidity Scripting](./tutorials/solidity-scripting.md)
-- [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
-- [Learning Foundry Videos](./tutorials/learn-foundry.md)
+- [Foundry v1.0 migration guide](./guides/v1.0-migration.md)
+- [Best Practices](./guides/best-practices.md)
+- [Scripting with Solidity](./guides/scripting-with-solidity.md)
+- [Deterministic deployments using CREATE2](guides/deterministic-deployments-using-create2.md)
+- [Forking Mainnet with Cast and Anvil](./guides/forking-mainnet-with-cast-anvil.md)
+- [Running Foundry inside of Docker](./guides/foundry-in-docker.md)
+- [Video tutorials](guides/video-tutorials.md)
 <!-- - [Incremental Adoption]() -->
 
 **Contributing**
@@ -66,6 +71,7 @@ Help us improve Foundry: [Contributing](./contributing.md)
 
 References, troubleshooting, and more.
 
+- [Announcements](./announcements.md)
 - [FAQ](./faq.md)
 - [CLI Reference](./reference/cli/)
 - [forge Commands](./reference/forge/)
@@ -80,4 +86,4 @@ References, troubleshooting, and more.
 
 <br>
 
-> You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, tutorials, tools, and libraries!
+> You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, guides, tools, and libraries!

@@ -15,15 +15,18 @@ Create a local testnet node for deploying and testing smart contracts. It can al
 This section covers an extensive list of information about Mining Modes, Supported Transport Layers, Supported RPC Methods, Anvil flags and their usages. You can run multiple flags at the same time.
 
 #### Mining Modes
+
 Mining modes refer to how frequent blocks are mined using Anvil. By default, it automatically generates a new block as soon as a transaction is submitted.
 
 You can change this setting to interval mining if you will, which means that a new block will be generated in a given period of time selected by the user. If you want to go for this type of mining, you can do it by adding the `--block-time <block-time-in-seconds>` flag, like in the following example.
+
 ```sh
 # Produces a new block every 10 seconds
 anvil --block-time 10
 ```
 
 There's also a third mining mode called never. In this case, it disables auto and interval mining, and mine on demand instead. You can do this by typing:
+
 ```sh
 # Enables never mining mode
 anvil --no-mining
@@ -32,6 +35,7 @@ anvil --no-mining
 To speed up the finalization of blocks, you can use the `--slots-in-an-epoch` flag with a value of `1` for example. This will lead to the block at height `N-2` being finalized, where `N` is the latest block.
 
 #### Supported Transport Layers
+
 HTTP and Websocket connections are supported. The server listens on port 8545 by default, but it can be changed by running the following command:
 
 ```sh
@@ -39,115 +43,119 @@ anvil --port <PORT>
 ```
 
 #### Default CREATE2 Deployer
+
 Anvil, when used without forking, includes the [default CREATE2 deployer proxy](https://github.com/Arachnid/deterministic-deployment-proxy) at the address `0x4e59b44847b379578588920ca78fbf26c0b4956c`.
 
 This allows you to test CREATE2 deployments locally without forking.
 
 #### Supported RPC Methods
+
 ##### Standard Methods
-The standard methods are based on [this](https://eth.wiki/json-rpc/API) reference.
 
-* `web3_clientVersion`
+The standard methods are based on [this](https://ethereum.org/en/developers/docs/apis/json-rpc/) reference.
 
-* `web3_sha3`
+- `web3_clientVersion`
 
-* `eth_chainId`
+- `web3_sha3`
 
-* `eth_networkId`
+- `eth_chainId`
 
-* `eth_gasPrice`
+- `eth_networkId`
 
-* `eth_accounts`
+- `eth_gasPrice`
 
-* `eth_blockNumber`
+- `eth_accounts`
 
-* `eth_getBalance`
+- `eth_blockNumber`
 
-* `eth_getStorageAt`
+- `eth_getBalance`
 
-* `eth_getBlockByHash`
+- `eth_getStorageAt`
 
-* `eth_getBlockByNumber`
+- `eth_getBlockByHash`
 
-* `eth_getTransactionCount`
+- `eth_getBlockByNumber`
 
-* `eth_getBlockTransactionCountByHash`
+- `eth_getTransactionCount`
 
-* `eth_getBlockTransactionCountByNumber`
+- `eth_getBlockTransactionCountByHash`
 
-* `eth_getUncleCountByBlockHash`
+- `eth_getBlockTransactionCountByNumber`
 
-* `eth_getUncleCountByBlockNumber`
+- `eth_getUncleCountByBlockHash`
 
-* `eth_getCode`
+- `eth_getUncleCountByBlockNumber`
 
-* `eth_sign`
+- `eth_getCode`
 
-* `eth_signTypedData_v4`
+- `eth_sign`
 
-* `eth_sendTransaction`
+- `eth_signTypedData_v4`
 
-* `eth_sendRawTransaction`
+- `eth_sendTransaction`
 
-* `eth_call`
+- `eth_sendRawTransaction`
 
-* `eth_createAccessList`
+- `eth_call`
 
-* `eth_estimateGas`
+- `eth_createAccessList`
 
-* `eth_getTransactionByHash`
+- `eth_estimateGas`
 
-* `eth_getTransactionByBlockHashAndIndex`
+- `eth_getTransactionByHash`
 
-* `eth_getTransactionByBlockNumberAndIndex`
+- `eth_getTransactionByBlockHashAndIndex`
 
-* `eth_getTransactionReceipt`
+- `eth_getTransactionByBlockNumberAndIndex`
 
-* `eth_getUncleByBlockHashAndIndex`
+- `eth_getTransactionReceipt`
 
-* `eth_getUncleByBlockNumberAndIndex`
+- `eth_getUncleByBlockHashAndIndex`
 
-* `eth_getLogs`
+- `eth_getUncleByBlockNumberAndIndex`
 
-* `eth_newFilter`
+- `eth_getLogs`
 
-* `eth_getFilterChanges`
+- `eth_newFilter`
 
-* `eth_newBlockFilter`
+- `eth_getFilterChanges`
 
-* `eth_newPendingTransactionFilter`
+- `eth_newBlockFilter`
 
-* `eth_getFilterLogs`
+- `eth_newPendingTransactionFilter`
 
-* `eth_uninstallFilter`
+- `eth_getFilterLogs`
 
-* `eth_getWork`
+- `eth_uninstallFilter`
 
-* `eth_subscribe`
+- `eth_getWork`
 
-* `eth_unsubscribe`
+- `eth_subscribe`
 
-* `eth_syncing`
+- `eth_unsubscribe`
 
-* `eth_submitWork`
+- `eth_syncing`
 
-* `eth_submitHashrate`
+- `eth_submitWork`
 
-* `eth_feeHistory`
+- `eth_submitHashrate`
 
-* `eth_getProof`
+- `eth_feeHistory`
 
-* `debug_traceTransaction`
-Use `anvil --steps-tracing` to get `structLogs`
+- `eth_getProof`
 
-* `debug_traceCall`
-Note that non-standard traces are not yet supported.  This means you can't pass any arguments to the `trace` parameter.
+- `debug_traceTransaction`
+  Use `anvil --steps-tracing` to get `structLogs`
 
-* `trace_transaction`
+- `debug_traceCall`
+  Note that non-standard traces are not yet supported. This means you can't pass any arguments to the `trace` parameter.
 
-* `trace_block`
+- `trace_transaction`
+
+- `trace_block`
 
 ##### Custom Methods
+
 The `anvil_*` namespace is an alias for `hardhat`. For more info, refer to the [Hardhat documentation](https://hardhat.org/hardhat-network/reference#hardhat-network-methods).
 
 `anvil_impersonateAccount`
@@ -211,6 +219,7 @@ When given a hex string previously returned by `anvil_dumpState`, merges the con
 Retrieves the configuration params for the currently running Anvil node.
 
 ##### Special Methods
+
 The special methods come from Ganache. You can take a look at the documentation [here](https://github.com/trufflesuite/ganache-cli-archive/blob/master/README.md).
 
 `evm_setAutomine`
@@ -261,7 +270,8 @@ Returns a summary of all the transactions currently pending for inclusion in the
 Returns the details of all transactions currently pending for inclusion in the next block(s), as well as the ones that are being scheduled for future execution only.
 
 ##### Otterscan Methods
-The `ots_*` namespace implements the [Otterscan specification](https://github.com/otterscan/otterscan/blob/develop/docs/custom-jsonrpc.md).
+
+The `ots_*` namespace implements the [Otterscan specification](https://docs.otterscan.io/api-docs/ots-api).
 
 `ots_getApiLevel`
 Used by Otterscan to check if it\'s connecting to a compatible node and display a friendly message if it is not.
@@ -279,7 +289,7 @@ Extract the transaction raw error output.
 Extract all variations of calls, contract creation and self-destructs and returns a call tree.
 
 `ots_getBlockDetails`
-Tailor-made and expanded version of eth_getBlock* for block details page in Otterscan.
+Tailor-made and expanded version of eth_getBlock\* for block details page in Otterscan.
 
 `ots_getBlockTransactions`
 Get paginated transactions for a certain block, And removes some verbose fields such logs.
@@ -296,9 +306,10 @@ Gets the transaction hash for a certain sender address, given its nonce.
 `ots_getContractCreator`
 Gets the transaction hash and the address which created a contract.
 
-
 ### OPTIONS
+
 #### General Options
+
 `-a, --accounts <ACCOUNTS>`
 &nbsp;&nbsp;&nbsp;&nbsp; Set the number of accounts. [default: 10]
 
@@ -354,11 +365,17 @@ Gets the transaction hash and the address which created a contract.
 &nbsp;&nbsp;&nbsp;&nbsp; Disables deploying the default CREATE2 factory when running Anvil without forking.
 
 #### EVM Options
+
 `-f, --fork-url <URL>`
 &nbsp;&nbsp;&nbsp;&nbsp; Fetch state over a remote endpoint instead of starting from an empty state.
 
 `--fork-block-number <BLOCK>`
 &nbsp;&nbsp;&nbsp;&nbsp; Fetch state from a specific block number over a remote endpoint (Must pass `--fork-url` in the same command-line).
+
+`--fork-chain-id <CHAIN>`
+&nbsp;&nbsp;&nbsp;&nbsp; Specify chain id to skip fetching it from remote endpoint. This enables offline-start mode.
+          You still must pass both `--fork-url` and `--fork-block-number`, and already have your required state cached on disk, anything missing locally
+          would be fetched from the remote.
 
 `--fork-retry-backoff <BACKOFF>`
 &nbsp;&nbsp;&nbsp;&nbsp; Initial retry backoff on encountering errors.
@@ -383,8 +400,8 @@ Gets the transaction hash and the address which created a contract.
 `--no-storage-caching`
 &nbsp;&nbsp;&nbsp;&nbsp; Disables RPC caching; all storage slots are read from the endpoint. This flag overrides the project's configuration file (Must pass --fork-url in the same command-line).
 
-
 #### Executor Environment Config
+
 `--base-fee <FEE>`
 `--block-base-fee-per-gas <FEE>`
 &nbsp;&nbsp;&nbsp;&nbsp; The base fee in a block.
@@ -402,6 +419,7 @@ Gets the transaction hash and the address which created a contract.
 &nbsp;&nbsp;&nbsp;&nbsp; The gas price.
 
 #### Server Options
+
 `--allow-origin <allow-origin>`
 &nbsp;&nbsp;&nbsp;&nbsp; Set the CORS `allow_origin`. [default: *]
 
@@ -417,25 +435,32 @@ Gets the transaction hash and the address which created a contract.
 `--prune-history`
 &nbsp;&nbsp;&nbsp;&nbsp; Don't keep full chain history.
 
+`--no-request-size-limit`
+&nbsp;&nbsp;&nbsp;&nbsp; Disable the request size limit. Default is 2MB
+
 ### EXAMPLES
+
 1. Set the number of accounts to 15 and their balance to 300 ETH
-  ```sh
-  anvil --accounts 15 --balance 300
-  ```
+
+```sh
+anvil --accounts 15 --balance 300
+```
 
 2. Choose the address which will execute the tests
-  ```sh
-  anvil --sender 0xC8479C45EE87E0B437c09d3b8FE8ED14ccDa825E
-  ```
+
+```sh
+anvil --sender 0xC8479C45EE87E0B437c09d3b8FE8ED14ccDa825E
+```
 
 3. Change how transactions are sorted in the mempool to FIFO
-  ```sh
-  anvil --order fifo
-  ```
+
+```sh
+anvil --order fifo
+```
 
 ### Shell Completions
 
-``anvil completions`` *shell*
+`anvil completions` _shell_
 
 Generates a shell completions script for the given shell.
 
@@ -450,16 +475,15 @@ Supported shells are:
 #### EXAMPLES
 
 1. Generate shell completions script for zsh:
-    ```sh
-    anvil completions zsh > $HOME/.oh-my-zsh/completions/_anvil
-    ```
-
+   ```sh
+   anvil completions zsh > $HOME/.oh-my-zsh/completions/_anvil
+   ```
 
 ### Usage within Docker
 
-In order to run anvil as a service in Github Actions with the [Docker container](../../tutorials/foundry-docker.md), where passing arguments to the entrypoint command is not possible, use the `ANVIL_IP_ADDR` environment variable to set the host's IP. `ANVIL_IP_ADDR=0.0.0.0` is equivalent to providing the `--host <ip>` option.
+In order to run anvil as a service in Github Actions with the [Docker container](../../guides/foundry-in-docker.md), where passing arguments to the entrypoint command is not possible, use the `ANVIL_IP_ADDR` environment variable to set the host's IP. `ANVIL_IP_ADDR=0.0.0.0` is equivalent to providing the `--host <ip>` option.
 
-#### Using `genesis.json` 
+#### Using `genesis.json`
 
 The `genesis.json` file in Anvil serves a similar purpose as in Geth, defining the network's initial state, consensus rules, and preallocated accounts to ensure all nodes start consistently and maintain network integrity. All values, including balance, gas limit and such, are to be defined as hexadecimals.
 

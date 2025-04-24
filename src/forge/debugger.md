@@ -2,39 +2,32 @@
 
 Forge ships with an interactive debugger.
 
-The debugger is accessible on [`forge debug`](../reference/forge/forge-debug.md) and on [`forge test`](../reference/forge/forge-test.md).
+The debugger is accessible on [`forge test`](../reference/forge/forge-test.md), on [`forge script`](../reference/forge/forge-script.md) and on [`cast run`](../reference/cast/cast-run.md). You can only select a single function or a single transaction to debug at the time.
 
-Using `forge test`:
-
-```sh
-$ forge test --debug $FUNC
-```
-
-Where `$FUNC` is the signature of the function you want to debug. For example:
+Using `forge test` (or `forge script`):
 
 ```sh
-$ forge test --debug "testSomething()"
+$ forge test --debug --match-test "<REGEX>"
 ```
 
-If you have multiple contracts with the same function name, you need to limit the matching functions down to only one case using `--match-path` and `--match-contract`.
-
-If the matching test is a fuzz test, the debugger will open the first failing fuzz scenario, or the last successful one, whichever comes first.
-
-Using `forge debug`:
+Where `<REGEX>` is the function signature of the file you want to debug. For example:
 
 ```sh
-$ forge debug --debug $FILE --sig $FUNC
+$ forge test --debug --match-test "test_Increment"
 ```
 
-Where `$FILE` is the path to the contract you want to debug, and `$FUNC` is the signature of the function you want to debug. For example:
+If the matching test is a fuzz test, the debugger will open the first failing fuzz scenario, or the last successful one, whichever comes first. For example:
 
 ```sh
-$ forge debug --debug src/SomeContract.sol --sig "myFunc(uint256,string)" 123 "hello"
+$ forge test --debug --match-test "testFuzz_SetNumber"
 ```
 
-You can also specify raw calldata using `--sig` instead of a function signature.
+Using `cast run`:
 
-If your source file contains more than one contract, specify the contract you want to debug using the `--target-contract` flag.
+```sh
+cast run --debug \
+  0xd15e0237413d7b824b784e1bbc3926e52f4726e5e5af30418803b8b327b4f8ca
+```
 
 ### Debugger layout
 

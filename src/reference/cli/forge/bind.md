@@ -38,6 +38,20 @@ Options:
           
           [default: 0.1.0]
 
+      --crate-description <DESCRIPTION>
+          The description of the Rust crate to generate.
+          
+          This will be added to the package.description field in Cargo.toml.
+          
+          [default: ]
+
+      --crate-license <LICENSE>
+          The license of the Rust crate to generate.
+          
+          This will be added to the package.license field in Cargo.toml.
+          
+          [default: ]
+
       --module
           Generate the bindings as a module instead of a crate
 
@@ -60,18 +74,20 @@ Options:
       --skip-extra-derives
           Don't add any additional derives to generated bindings
 
-      --alloy
-          Generate bindings for the `alloy` library, instead of `ethers`
-
       --alloy-version <ALLOY_VERSION>
-          Specify the alloy version
+          Specify the `alloy` version on Crates
 
-      --ethers
-          Generate bindings for the `ethers` library, instead of `alloy`
-          (default, deprecated)
+      --alloy-rev <ALLOY_REV>
+          Specify the `alloy` revision on GitHub
 
   -h, --help
           Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
 Cache options:
       --force
@@ -81,12 +97,11 @@ Build options:
       --no-cache
           Disable the cache
 
+      --dynamic-test-linking
+          Enable dynamic test linking
+
       --eof
-          Use EOF-enabled solc binary. Enables via-ir and sets EVM version to
-          Prague. Requires Docker to be installed.
-          
-          Note that this is a temporary solution until the EOF support is merged
-          into the main solc release.
+          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -123,14 +138,14 @@ Compiler options:
       --via-ir
           Use the Yul intermediate representation compilation pipeline
 
+      --use-literal-content
+          Changes compilation to only use literal content and not URLs
+
       --no-metadata
           Do not append any metadata to the bytecode.
           
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
-
-      --silent
-          Don't print anything on startup
 
       --ast
           Includes the AST as JSON in the compiler output
@@ -138,8 +153,10 @@ Compiler options:
       --evm-version <VERSION>
           The target EVM version
 
-      --optimize
+      --optimize [<OPTIMIZE>]
           Activate the Solidity optimizer
+          
+          [possible values: true, false]
 
       --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the
@@ -210,4 +227,34 @@ Project options:
 
       --config-path <FILE>
           Path to the config file
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```

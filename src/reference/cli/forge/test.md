@@ -13,8 +13,64 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
+Display options:
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
+
+  -q, --quiet
+          Do not print log messages
+
+      --json
+          Format log messages as JSON
+
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -s, --suppress-successful-traces
+          Suppress successful test traces and show only traces for failures
+          
+          [env: FORGE_SUPPRESS_SUCCESSFUL_TRACES=]
+
+      --junit
+          Output test results as JUnit XML report
+
+  -l, --list
+          List tests instead of running them
+
+      --show-progress
+          Show test execution progress
+
+      --summary
+          Print test summary table
+
+      --detailed
+          Print detailed test summary table
+
 Test options:
-      --debug [<DEPRECATED_TEST_FUNCTION_REGEX>]
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
+
+      --debug
           Run a single test in the debugger.
           
           The matching test will be opened in the debugger regardless of the
@@ -38,7 +94,7 @@ Test options:
           function is called (execution order) and how much gas it consumes at
           each point in the timeline.
 
-      --decode-internal [<DEPRECATED_TEST_FUNCTION_REGEX>]
+      --decode-internal
           Identify internal functions in traces.
           
           This will trace internal functions and decode stack parameters.
@@ -47,10 +103,25 @@ Test options:
           decoded only when a single function is matched, similarly to
           `--debug`, for performance reasons.
 
+      --dump <PATH>
+          Dumps all debugger steps to file
+
       --gas-report
           Print a gas report
           
           [env: FORGE_GAS_REPORT=]
+
+      --gas-snapshot-check <GAS_SNAPSHOT_CHECK>
+          Check gas snapshots against previous runs
+          
+          [env: FORGE_SNAPSHOT_CHECK=]
+          [possible values: true, false]
+
+      --gas-snapshot-emit <GAS_SNAPSHOT_EMIT>
+          Enable/disable recording of gas snapshot results
+          
+          [env: FORGE_SNAPSHOT_EMIT=]
+          [possible values: true, false]
 
       --allow-failure
           Exit with code 0 even if a test fails
@@ -71,36 +142,20 @@ Test options:
       --fuzz-runs <RUNS>
           [env: FOUNDRY_FUZZ_RUNS=]
 
+      --fuzz-timeout <TIMEOUT>
+          Timeout for each fuzz run in seconds
+          
+          [env: FOUNDRY_FUZZ_TIMEOUT=]
+
       --fuzz-input-file <FUZZ_INPUT_FILE>
           File to rerun fuzz failures from
 
-  -j, --threads <THREADS>
-          Max concurrent threads to use. Default value is the number of
-          available CPUs
-          
-          [aliases: jobs]
-
-      --show-progress
-          Show test execution progress
+      --rerun
+          Re-run recorded test failures from last run. If no failure recorded
+          then regular test run is performed
 
   [PATH]
           The contract file you want to test, it's a shortcut for --match-path
-
-Display options:
-      --json
-          Output test results in JSON format
-
-      --junit
-          Output test results as JUnit XML report
-
-  -l, --list
-          List tests instead of running them
-
-      --summary
-          Print test summary table
-
-      --detailed
-          Print detailed test summary table
 
 Test filtering:
       --match-test <REGEX>
@@ -140,10 +195,6 @@ Test filtering:
           pattern
           
           [aliases: nmco]
-
-      --rerun
-          Re-run recorded test failures from last run. If no failure recorded
-          then regular test run is performed
 
 EVM options:
   -f, --fork-url <URL>
@@ -192,17 +243,9 @@ EVM options:
           Use the create 2 factory in all cases including tests and
           non-broadcasting scripts
 
-  -v, --verbosity...
-          Verbosity of the EVM.
-          
-          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
-          
-          Verbosity levels:
-          - 2: Print logs for all tests
-          - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for
-          failing tests
-          - 5: Print execution and setup traces for all tests
+      --create2-deployer <ADDRESS>
+          The CREATE2 deployer address to use, this will override the one in the
+          config
 
 Fork config:
       --compute-units-per-second <CUPS>
@@ -223,9 +266,6 @@ Fork config:
           [aliases: no-rate-limit]
 
 Executor environment config:
-      --gas-limit <GAS_LIMIT>
-          The block gas limit
-
       --code-size-limit <CODE_SIZE>
           EIP-170: Contract code size limit in bytes. Useful to increase this
           because of tests. By default, it is 0x6000 (~25kb)
@@ -263,6 +303,8 @@ Executor environment config:
 
       --block-gas-limit <GAS_LIMIT>
           The block gas limit
+          
+          [aliases: gas-limit]
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
@@ -281,8 +323,8 @@ Executor environment config:
           context, enabling more precise gas accounting and transaction state
           changes
 
-      --alphanet
-          Whether to enable Alphanet features
+      --odyssey
+          Whether to enable Odyssey features
 
 Cache options:
       --force
@@ -292,12 +334,11 @@ Build options:
       --no-cache
           Disable the cache
 
+      --dynamic-test-linking
+          Enable dynamic test linking
+
       --eof
-          Use EOF-enabled solc binary. Enables via-ir and sets EVM version to
-          Prague. Requires Docker to be installed.
-          
-          Note that this is a temporary solution until the EOF support is merged
-          into the main solc release.
+          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -334,14 +375,14 @@ Compiler options:
       --via-ir
           Use the Yul intermediate representation compilation pipeline
 
+      --use-literal-content
+          Changes compilation to only use literal content and not URLs
+
       --no-metadata
           Do not append any metadata to the bytecode.
           
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
-
-      --silent
-          Don't print anything on startup
 
       --ast
           Includes the AST as JSON in the compiler output
@@ -349,8 +390,10 @@ Compiler options:
       --evm-version <VERSION>
           The target EVM version
 
-      --optimize
+      --optimize [<OPTIMIZE>]
           Activate the Solidity optimizer
+          
+          [possible values: true, false]
 
       --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the

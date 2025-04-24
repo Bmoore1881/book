@@ -18,10 +18,28 @@ curl -L https://foundry.paradigm.xyz | bash
 
 This will install Foundryup. Simply follow the on-screen instructions, and the `foundryup` command will become available in your CLI.
 
-Running `foundryup` will automatically install the latest (nightly) versions of the [precompiled binaries](#precompiled-binaries): `forge`, `cast`, `anvil`, and `chisel`. For additional options, such as installing a specific version or commit, run `foundryup --help`.
+Running `foundryup` will automatically install the latest stable version of the [precompiled binaries](#precompiled-binaries): `forge`, `cast`, `anvil`, and `chisel`. If you wish to use the latest `nightly` build run `foundryup --install nightly`. For additional options, such as installing a specific version or commit, run `foundryup --help`.
 
 > ℹ️ **Note**  
 > If you're using Windows, you'll need to install and use [Git BASH](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) as your terminal, since Foundryup currently doesn't support Powershell or Command Prompt (Cmd).
+
+#### Verify integrity and provenance of binaries
+
+Foundry binaries are attested by using [GitHub artifact attestations](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds). It is strongly recommended to verify the binaries installed using `foundryup` in order to check that they were built and distributed from Foundry repository.  
+For example, `forge` binary integrity and provenance can be verified by running:
+```shell
+$ gh attestation verify --owner foundry-rs $(which forge)
+
+✓ Verification succeeded!
+
+The following 1 attestation matched the policy criteria
+
+- Attestation #1
+  - Build repo:..... foundry-rs/foundry
+  - Build workflow:. .github/workflows/release.yml@refs/tags/stable
+  - Signer repo:.... foundry-rs/foundry
+  - Signer workflow: .github/workflows/release.yml@refs/tags/stable
+```
 
 ### Building from Source
 
@@ -49,7 +67,7 @@ foundryup --path path/to/foundry
 Alternatively, you can install via Cargo with the following command:
 
 ```sh
-cargo install --git https://github.com/foundry-rs/foundry --profile release --locked forge foundry-cast chisel anvil
+cargo install --git https://github.com/foundry-rs/foundry --profile release --locked forge cast chisel anvil
 ```
 
 You can also manually build from a local copy of the [Foundry repository](https://github.com/foundry-rs/foundry):
@@ -88,7 +106,7 @@ You can also build the Docker image locally by running the following command fro
 docker build -t foundry .
 ```
 
-For examples and guides on using this image, refer to the [Docker tutorial section](../tutorials/foundry-docker).
+For examples and guides on using this image, refer to the [Docker guide](../guides/foundry-in-docker).
 
 > ℹ️ **Note**  
 > Some systems, including those with M1 chips, may experience issues when building the Docker image locally. This is a known issue.
