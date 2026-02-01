@@ -32,6 +32,13 @@ Options:
           
           If not specified, the interface will be output to stdout.
 
+      --flatten
+          If set, generate all types in a single interface, inlining any
+          inherited or library types.
+          
+          This can fail if there are structs with the same name in different
+          interfaces.
+
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
@@ -49,7 +56,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>
@@ -62,6 +69,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -79,5 +89,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

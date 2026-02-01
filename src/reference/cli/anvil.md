@@ -10,9 +10,8 @@ $ anvil --help
 Usage: anvil [OPTIONS] [COMMAND]
 
 Commands:
-  completions        Generate shell completions script [aliases: com]
-  generate-fig-spec  Generate Fig autocompletion spec [aliases: fig]
-  help               Print this message or the help of the given subcommand(s)
+  completions  Generate shell completions script [aliases: com]
+  help         Print this message or the help of the given subcommand(s)
 
 Options:
   -a, --accounts <NUM>
@@ -23,7 +22,7 @@ Options:
   -b, --block-time <SECONDS>
           Block time in seconds for interval mining
           
-          [aliases: blockTime]
+          [aliases: --blockTime]
 
       --balance <NUM>
           The balance of every dev account in Ether
@@ -51,8 +50,8 @@ Options:
       --hardfork <HARDFORK>
           The EVM hardfork to use.
           
-          Choose the hardfork by name, e.g. `cancun`, `shanghai`, `paris`,
-          `london`, etc... [default: latest]
+          Choose the hardfork by name, e.g. `prague`, `cancun`, `shanghai`,
+          `paris`, `london`, etc... [default: latest]
 
       --init <PATH>
           Initialize the genesis block with the given `genesis.json` file
@@ -61,13 +60,13 @@ Options:
           Launch an ipc server at the given path or default path =
           `/tmp/anvil.ipc`
           
-          [aliases: ipcpath]
+          [aliases: --ipcpath]
 
   -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
       --load-state <PATH>
           Initialize the chain from a previously saved state snapshot
@@ -82,7 +81,7 @@ Options:
           Note that `prune_history` will overwrite `max_persisted_states` to 0.
 
       --mixed-mining
-          [aliases: mixed-mining]
+          
 
       --mnemonic-random [<MNEMONIC_RANDOM>]
           Automatically generates a BIP39 mnemonic phrase, and derives accounts
@@ -99,7 +98,7 @@ Options:
       --no-mining
           Disable auto and interval mining, and mine on demand instead
           
-          [aliases: no-mine]
+          [aliases: --no-mine]
 
       --number <NUM>
           The number of the genesis block
@@ -169,6 +168,9 @@ Display options:
       --json
           Format log messages as JSON
 
+      --md
+          Format log messages as Markdown
+
   -q, --quiet
           Do not print log messages
 
@@ -185,7 +187,8 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 
 Server options:
       --allow-origin <ALLOW_ORIGIN>
@@ -194,7 +197,12 @@ Server options:
           [default: *]
 
       --cache-path <PATH>
-          Path to the cache directory where states are stored
+          Path to the cache directory where persisted states are stored (see
+          `--max-persisted-states`).
+          
+          Note: This does not affect the fork RPC cache location
+          (`storage.json`), which is stored in
+          `~/.foundry/cache/rpc/<chain>/<block>/`.
 
       --host <IP_ADDR>
           The hosts the server will listen on
@@ -227,13 +235,13 @@ Fork config:
           number like `http://localhost:8545@1400000` or use the
           `--fork-block-number` argument.
           
-          [aliases: rpc-url]
+          [aliases: --rpc-url]
 
       --fork-block-number <BLOCK>
           Fetch state from a specific block number over a remote endpoint.
           
-          If a negative the the given value is subtracted from the `latest`
-          block number.
+          If negative, the given value is subtracted from the `latest` block
+          number.
           
           See --fork-url.
 
@@ -256,7 +264,8 @@ Fork config:
           See --fork-url.
 
       --fork-transaction-hash <TRANSACTION>
-          Fetch state from a specific transaction hash over a remote endpoint.
+          Fetch state from after a specific transaction hash has been applied
+          over a remote endpoint.
           
           See --fork-url.
 
@@ -268,7 +277,7 @@ Fork config:
           See also --fork-url and
           <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
           
-          [aliases: no-rpc-rate-limit]
+          [aliases: --no-rpc-rate-limit]
 
       --no-storage-caching
           Explicitly disables the use of RPC caching.
@@ -294,7 +303,7 @@ Environment config:
       --block-base-fee-per-gas <FEE>
           The base fee in a block
           
-          [aliases: base-fee]
+          [aliases: --base-fee]
 
       --chain-id <CHAIN_ID>
           The chain ID
@@ -313,7 +322,7 @@ Environment config:
       --disable-min-priority-fee
           Disable the enforcement of a minimum suggested priority fee
           
-          [aliases: no-priority-fee]
+          [aliases: --no-priority-fee]
 
       --gas-limit <GAS_LIMIT>
           The block gas limit
@@ -327,37 +336,39 @@ EVM options:
           transaction sender to be simulated as different accounts, which is
           useful for testing contract behavior
           
-          [aliases: auto-unlock]
+          [aliases: --auto-unlock]
 
       --disable-console-log
           Disable printing of `console.log` invocations to stdout
           
-          [aliases: no-console-log]
+          [aliases: --no-console-log]
 
       --disable-default-create2-deployer
           Disable the default create2 deployer
           
-          [aliases: no-create2]
+          [aliases: --no-create2]
+
+      --disable-pool-balance-checks
+          Disable pool balance checks
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes
-
-      --odyssey
-          Enable Odyssey features
-
-      --optimism
-          Run an Optimism chain
-          
-          [aliases: optimism]
 
       --print-traces
           Enable printing of traces for executed transactions and `eth_call` to
           stdout
           
-          [aliases: enable-trace-printing]
+          [aliases: --enable-trace-printing]
 
       --steps-tracing
           Enable steps tracing used for debug calls returning geth-style traces
           
-          [aliases: tracing]
+          [aliases: --tracing]
+
+Networks:
+      --celo
+          Enable Celo network features
+
+      --optimism
+          Enable Optimism network features
 ```

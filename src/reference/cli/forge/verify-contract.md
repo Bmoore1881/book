@@ -18,15 +18,19 @@ Arguments:
 
 Options:
       --constructor-args <ARGS>
-          The ABI-encoded constructor arguments
+          The ABI-encoded constructor arguments. Only for Etherscan
           
-          [aliases: encoded-constructor-args]
+          [aliases: --encoded-constructor-args]
 
       --constructor-args-path <PATH>
           The path to a file containing the constructor arguments
 
       --guess-constructor-args
           Try to extract constructor arguments from on-chain creation code
+
+      --creation-transaction-hash <CREATION_TRANSACTION_HASH>
+          The hash of the transaction which created the contract. Optional for
+          Sourcify
 
       --compiler-version <VERSION>
           The `solc` version to use to build the smart contract
@@ -37,7 +41,7 @@ Options:
       --num-of-optimizations <NUM>
           The number of optimization runs used to build the smart contract
           
-          [aliases: optimizer-runs]
+          [aliases: --optimizer-runs]
 
       --flatten
           Flatten the source code before verifying
@@ -82,10 +86,50 @@ Options:
           
           [env: CHAIN=]
 
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Linker options:
+      --libraries <LIBRARIES>
+          Set pre-linked libraries
+          
+          [env: DAPP_LIBRARIES=]
+
+Compiler options:
+      --no-auto-detect
+          Do not auto-detect the `solc` version
+
+      --use <SOLC_VERSION>
+          Specify the solc version, or a path to a local solc, to build with.
+          
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
+
+Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -125,6 +169,9 @@ Options:
           
           [env: ETH_RPC_HEADERS=]
 
+      --curl
+          Print the equivalent curl command instead of making the RPC request
+
       --retries <RETRIES>
           Number of attempts for retrying verification
           
@@ -135,26 +182,18 @@ Options:
           
           [default: 5]
 
-  -h, --help
-          Print help (see a summary with '-h')
-
-  -j, --threads <THREADS>
-          Number of threads to use. Specifying 0 defaults to the number of
-          logical cores
+      --language <LANGUAGE>
+          The contract language (`solidity` or `vyper`).
           
-          [aliases: jobs]
+          Defaults to `solidity` if none provided.
 
-Linker options:
-      --libraries <LIBRARIES>
-          Set pre-linked libraries
-          
-          [env: DAPP_LIBRARIES=]
+          Possible values:
+          - solidity: Solidity programming language
+          - vyper:    Vyper programming language
 
 Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
-          
-          [default: sourcify]
 
           Possible values:
           - etherscan
@@ -163,6 +202,8 @@ Verifier options:
           - oklink
           - custom:     Custom verification provider, requires compatibility
             with the Etherscan API
+          
+          [default: sourcify]
 
       --verifier-api-key <VERIFIER_API_KEY>
           The verifier API KEY, if using a custom provider
@@ -186,6 +227,9 @@ Display options:
       --json
           Format log messages as JSON
 
+      --md
+          Format log messages as Markdown
+
   -q, --quiet
           Do not print log messages
 
@@ -202,5 +246,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

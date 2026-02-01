@@ -26,7 +26,7 @@ Options:
       --offline
           Do not install dependencies from the network
           
-          [aliases: no-deps]
+          [aliases: --no-deps]
 
       --force
           Create the project even if the specified root directory is not empty
@@ -34,6 +34,22 @@ Options:
       --vscode
           Create a .vscode/settings.json file with Solidity settings, and
           generate a remappings.txt file
+
+      --vyper
+          Initialize a Vyper project template
+
+  -n, --network <NETWORK>
+          Initialize a project template for the specified network in Foundry
+          
+          [possible values: tempo]
+
+      --use-parent-git
+          Use the parent git repository instead of initializing a new one. Only
+          valid if the target is in a git repository
+
+      --empty
+          Do not create example contracts (Counter.sol, Counter.t.sol,
+          Counter.s.sol)
 
       --shallow
           Perform shallow clones instead of deep ones.
@@ -54,7 +70,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>
@@ -67,6 +83,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -84,5 +103,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

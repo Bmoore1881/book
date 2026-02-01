@@ -11,7 +11,19 @@ Usage: cast wallet verify [OPTIONS] --address <ADDRESS> <MESSAGE> <SIGNATURE>
 
 Arguments:
   <MESSAGE>
-          The original message
+          The original message.
+          
+          Treats 0x-prefixed strings as hex encoded bytes. Non 0x-prefixed
+          strings are treated as raw input message.
+          
+          The message will be prefixed with the Ethereum Signed Message header
+          and hashed before signing, unless `--no-hash` is provided.
+          
+          Typed data can be provided as a json string or a file name. Use --data
+          flag to denote the message is a string of typed data. Use --data
+          --from-file to denote the message is a file name containing typed
+          data. The data will be combined and hashed using the EIP712
+          specification before signing. The data should be formatted as JSON.
 
   <SIGNATURE>
           The signature to verify
@@ -20,6 +32,17 @@ Options:
   -a, --address <ADDRESS>
           The address of the message signer
 
+      --data
+          Treat the message as JSON typed data
+
+      --from-file
+          Treat the message as a file containing JSON typed data. Requires
+          `--data`
+
+      --no-hash
+          Treat the message as a raw 32-byte hash and sign it directly without
+          hashing it again
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -27,7 +50,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>
@@ -40,6 +63,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -57,5 +83,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

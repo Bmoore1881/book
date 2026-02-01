@@ -14,10 +14,34 @@ Arguments:
           Address to sign authorization for
 
 Options:
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -57,20 +81,20 @@ Options:
           
           [env: ETH_RPC_HEADERS=]
 
+      --curl
+          Print the equivalent curl command instead of making the RPC request
+
       --nonce <NONCE>
           
 
       --chain <CHAIN>
           
 
-  -h, --help
-          Print help (see a summary with '-h')
-
-  -j, --threads <THREADS>
-          Number of threads to use. Specifying 0 defaults to the number of
-          logical cores
-          
-          [aliases: jobs]
+      --self-broadcast
+          If set, indicates the authorization will be broadcast by the signing
+          account itself. This means the nonce used will be the current nonce +
+          1 (to account for the transaction that will include this
+          authorization)
 
 Wallet options - raw:
   -f, --from <ADDRESS>
@@ -135,7 +159,37 @@ Wallet options - hardware wallet:
 
 Wallet options - remote:
       --aws
-          Use AWS Key Management Service
+          Use AWS Key Management Service.
+          
+          Ensure the AWS_KMS_KEY_ID environment variable is set.
+
+      --gcp
+          Use Google Cloud Key Management Service.
+          
+          Ensure the following environment variables are set: GCP_PROJECT_ID,
+          GCP_LOCATION, GCP_KEY_RING, GCP_KEY_NAME, GCP_KEY_VERSION.
+          
+          See: <https://cloud.google.com/kms/docs>
+
+      --turnkey
+          Use Turnkey.
+          
+          Ensure the following environment variables are set:
+          TURNKEY_API_PRIVATE_KEY, TURNKEY_ORGANIZATION_ID, TURNKEY_ADDRESS.
+          
+          See: <https://docs.turnkey.com/getting-started/quickstart>
+
+Wallet options - browser:
+      --browser
+          Use a browser wallet
+
+      --browser-port <PORT>
+          Port for the browser wallet server
+          
+          [default: 9545]
+
+      --browser-disable-open
+          Whether to open the browser for wallet connection
 
 Display options:
       --color <COLOR>
@@ -148,6 +202,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -165,5 +222,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

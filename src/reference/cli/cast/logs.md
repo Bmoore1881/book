@@ -37,6 +37,12 @@ Options:
           instead of printing and exiting. Will continue until interrupted or
           TO_BLOCK is reached
 
+      --query-size <QUERY_SIZE>
+          Number of blocks to query in each chunk when the provider has range
+          limits. Defaults to 10000 blocks per chunk
+          
+          [default: 10000]
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -44,13 +50,27 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
-Ethereum options:
+Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -90,80 +110,8 @@ Ethereum options:
           
           [env: ETH_RPC_HEADERS=]
 
-  -e, --etherscan-api-key <KEY>
-          The Etherscan (or equivalent) API key
-          
-          [env: ETHERSCAN_API_KEY=]
-
-  -c, --chain <CHAIN>
-          The chain name or EIP-155 chain ID
-          
-          [env: CHAIN=]
-
-Wallet options - raw:
-  -f, --from <ADDRESS>
-          The sender account
-          
-          [env: ETH_FROM=]
-
-  -i, --interactive
-          Open an interactive prompt to enter your private key
-
-      --private-key <RAW_PRIVATE_KEY>
-          Use the provided private key
-
-      --mnemonic <MNEMONIC>
-          Use the mnemonic phrase of mnemonic file at the specified path
-
-      --mnemonic-passphrase <PASSPHRASE>
-          Use a BIP39 passphrase for the mnemonic
-
-      --mnemonic-derivation-path <PATH>
-          The wallet derivation path.
-          
-          Works with both --mnemonic-path and hardware wallets.
-
-      --mnemonic-index <INDEX>
-          Use the private key from the given mnemonic index.
-          
-          Used with --mnemonic-path.
-          
-          [default: 0]
-
-Wallet options - keystore:
-      --keystore <PATH>
-          Use the keystore in the given folder or file
-          
-          [env: ETH_KEYSTORE=]
-
-      --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder
-          (~/.foundry/keystores) by its filename
-          
-          [env: ETH_KEYSTORE_ACCOUNT=]
-
-      --password <PASSWORD>
-          The keystore password.
-          
-          Used with --keystore.
-
-      --password-file <PASSWORD_FILE>
-          The keystore password file path.
-          
-          Used with --keystore.
-          
-          [env: ETH_PASSWORD=]
-
-Wallet options - hardware wallet:
-  -l, --ledger
-          Use a Ledger hardware wallet
-
-  -t, --trezor
-          Use a Trezor hardware wallet
-
-Wallet options - remote:
-      --aws
-          Use AWS Key Management Service
+      --curl
+          Print the equivalent curl command instead of making the RPC request
 
 Display options:
       --color <COLOR>
@@ -176,6 +124,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -193,5 +144,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```
