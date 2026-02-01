@@ -20,6 +20,9 @@ Options:
       --decode-internal
           Whether to identify internal functions in traces
 
+      --trace-depth <TRACE_DEPTH>
+          Defines the depth of a trace
+
   -t, --trace-printer
           Print out opcode traces
 
@@ -27,6 +30,12 @@ Options:
           Executes the transaction only with the state from the previous block.
           
           May result in different results than the live execution!
+
+      --replay-system-txes
+          Whether to replay system transactions
+
+      --disable-labels
+          Disables the labels in the traces
 
   -l, --label <LABEL>
           Label addresses in the trace.
@@ -43,10 +52,34 @@ Options:
           
           [env: CHAIN=]
 
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -86,6 +119,9 @@ Options:
           
           [env: ETH_RPC_HEADERS=]
 
+      --curl
+          Print the equivalent curl command instead of making the RPC request
+
       --evm-version <EVM_VERSION>
           The EVM version to use.
           
@@ -108,27 +144,18 @@ Options:
           See also,
           <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
           
-          [aliases: no-rpc-rate-limit]
-
-      --odyssey
-          Enables Odyssey features
+          [aliases: --no-rpc-rate-limit]
 
       --with-local-artifacts
           Use current project artifacts for trace decoding
           
-          [aliases: la]
+          [aliases: --la]
 
       --disable-block-gas-limit
           Disable block gas limit check
 
-  -h, --help
-          Print help (see a summary with '-h')
-
-  -j, --threads <THREADS>
-          Number of threads to use. Specifying 0 defaults to the number of
-          logical cores
-          
-          [aliases: jobs]
+      --enable-tx-gas-limit
+          Enable the tx gas limit checks as imposed by Osaka (EIP-7825)
 
 Display options:
       --color <COLOR>
@@ -141,6 +168,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -158,5 +188,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

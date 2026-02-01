@@ -27,13 +27,17 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 
   -q, --quiet
           Do not print log messages
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
       --color <COLOR>
           The color of the log messages
@@ -63,12 +67,15 @@ Display options:
       --detailed
           Print detailed test summary table
 
+      --disable-labels
+          Disables the labels in the traces
+
 Test options:
   -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
       --debug
           Run a single test in the debugger.
@@ -128,6 +135,9 @@ Test options:
           
           [env: FORGE_ALLOW_FAILURE=]
 
+      --trace-depth <TRACE_DEPTH>
+          Defines the depth of a trace
+
       --fail-fast
           Stop running tests after the first failure
 
@@ -161,40 +171,40 @@ Test filtering:
       --match-test <REGEX>
           Only run test functions matching the specified regex pattern
           
-          [aliases: mt]
+          [aliases: --mt]
 
       --no-match-test <REGEX>
           Only run test functions that do not match the specified regex pattern
           
-          [aliases: nmt]
+          [aliases: --nmt]
 
       --match-contract <REGEX>
           Only run tests in contracts matching the specified regex pattern
           
-          [aliases: mc]
+          [aliases: --mc]
 
       --no-match-contract <REGEX>
           Only run tests in contracts that do not match the specified regex
           pattern
           
-          [aliases: nmc]
+          [aliases: --nmc]
 
       --match-path <GLOB>
           Only run tests in source files matching the specified glob pattern
           
-          [aliases: mp]
+          [aliases: --mp]
 
       --no-match-path <GLOB>
           Only run tests in source files that do not match the specified glob
           pattern
           
-          [aliases: nmp]
+          [aliases: --nmp]
 
       --no-match-coverage <REGEX>
           Only show coverage for files that do not match the specified regex
           pattern
           
-          [aliases: nmco]
+          [aliases: --nmco]
 
 EVM options:
   -f, --fork-url <URL>
@@ -204,7 +214,7 @@ EVM options:
           If you want to fetch state from a specific block number, see
           --fork-block-number.
           
-          [aliases: rpc-url]
+          [aliases: --rpc-url]
 
       --fork-block-number <BLOCK>
           Fetch state from a specific block number over a remote endpoint.
@@ -263,7 +273,7 @@ Fork config:
           See also --fork-url and
           <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
           
-          [aliases: no-rate-limit]
+          [aliases: --no-rate-limit]
 
 Executor environment config:
       --code-size-limit <CODE_SIZE>
@@ -273,7 +283,7 @@ Executor environment config:
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
-          [aliases: chain-id]
+          [aliases: --chain-id]
 
       --gas-price <GAS_PRICE>
           The gas price
@@ -281,7 +291,7 @@ Executor environment config:
       --block-base-fee-per-gas <FEE>
           The base fee in a block
           
-          [aliases: base-fee]
+          [aliases: --base-fee]
 
       --tx-origin <ADDRESS>
           The transaction origin
@@ -301,10 +311,10 @@ Executor environment config:
       --block-prevrandao <PREVRANDAO>
           The block prevrandao value. NOTE: Before merge this field was mix_hash
 
-      --block-gas-limit <GAS_LIMIT>
+      --block-gas-limit <BLOCK_GAS_LIMIT>
           The block gas limit
           
-          [aliases: gas-limit]
+          [aliases: --gas-limit]
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
@@ -315,16 +325,18 @@ Executor environment config:
       --disable-block-gas-limit
           Whether to disable the block gas limit checks
           
-          [aliases: no-gas-limit]
+          [aliases: --no-block-gas-limit, --no-gas-limit]
+
+      --enable-tx-gas-limit
+          Whether to enable tx gas limit checks as imposed by Osaka (EIP-7825)
+          
+          [aliases: --tx-gas-limit]
 
       --isolate
           Whether to enable isolation of calls. In isolation mode all top-level
           calls are executed as a separate transaction in a separate EVM
           context, enabling more precise gas accounting and transaction state
           changes
-
-      --odyssey
-          Whether to enable Odyssey features
 
 Cache options:
       --force
@@ -336,9 +348,6 @@ Build options:
 
       --dynamic-test-linking
           Enable dynamic test linking
-
-      --eof
-          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -355,8 +364,20 @@ Compiler options:
       --ignored-error-codes <ERROR_CODES>
           Ignore solc warnings by error code
 
-      --deny-warnings
-          Warnings will trigger a compiler error
+  -D, --deny <LEVEL>
+          A compiler error will be triggered at the specified diagnostic level.
+          
+          Replaces the deprecated `--deny-warnings` flag.
+          
+          Possible values: - `never`: Do not treat any diagnostics as errors. -
+          `warnings`: Treat warnings as errors. - `notes`: Treat both, warnings
+          and notes, as errors.
+
+          Possible values:
+          - never:    Always exit with zero code
+          - warnings: Exit with a non-zero code if any warnings are found
+          - notes:    Exit with a non-zero code if any notes or warnings are
+            found
 
       --no-auto-detect
           Do not auto-detect the `solc` version
@@ -460,7 +481,7 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: hh]
+          [aliases: --hh]
 
       --config-path <FILE>
           Path to the config file
@@ -480,6 +501,13 @@ Watch options:
           
           By default, only the tests of the last modified test file are
           executed.
+
+      --rerun-failed
+          Re-run only previously failed tests first when a change is made.
+          
+          If all previously failed tests pass, the full test suite will be run
+          automatically. This is particularly useful for TDD workflows where you
+          want fast feedback on failures.
 
       --watch-delay <DELAY>
           File update debounce delay.

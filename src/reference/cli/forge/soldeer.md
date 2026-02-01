@@ -7,7 +7,7 @@ $ forge soldeer --help
 ```
 
 ```txt
-Usage: Native Solidity Package Manager, `run forge soldeer [COMMAND] --help` for more details
+Usage: Native Solidity Package Manager, run `forge soldeer [COMMAND] --help` for more details
 
 Commands:
   init       Convert a Foundry project to use Soldeer
@@ -16,6 +16,7 @@ Commands:
   login      Log into the central repository to push packages
   push       Push a dependency to the repository
   uninstall  Uninstall a dependency
+  clean      Clean downloaded dependencies and generated artifacts
   version    Display the version of Soldeer
   help       Print this message or the help of the given subcommand(s)
 
@@ -27,7 +28,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>
@@ -40,6 +41,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -57,5 +61,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

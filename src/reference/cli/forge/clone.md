@@ -24,11 +24,28 @@ Options:
           in the configuration
 
       --keep-directory-structure
-          Keep the original directory structure collected from Etherscan.
+          Keep the original directory structure collected from the block
+          explorer.
           
           If this flag is set, the directory structure of the cloned project
           will be kept as is. By default, the directory structure is re-orgnized
           to increase the readability, but may risk some compilation failures.
+
+      --source <EXPLORER>
+          Source explorer to use for fetching contract data.
+          
+          Can be either "etherscan" (default) or "sourcify".
+
+          Possible values:
+          - etherscan: Use Etherscan API (default)
+          - sourcify:  Use Sourcify API
+          
+          [default: etherscan]
+
+      --sourcify-url <URL>
+          Custom Sourcify API URL.
+          
+          Implies `--source sourcify`.
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -59,7 +76,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>
@@ -72,6 +89,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -89,5 +109,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

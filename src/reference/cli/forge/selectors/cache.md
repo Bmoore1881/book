@@ -10,6 +10,9 @@ $ forge selectors cache --help
 Usage: forge selectors cache [OPTIONS]
 
 Options:
+      --extra-abis-path <EXTRA_ABIS_PATH>
+          Path to a folder containing additional abis to include in the cache
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -17,7 +20,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Project options:
       --root <PATH>
@@ -47,7 +50,7 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: hh]
+          [aliases: --hh]
 
       --config-path <FILE>
           Path to the config file
@@ -63,6 +66,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -80,5 +86,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

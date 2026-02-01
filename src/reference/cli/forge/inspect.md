@@ -20,7 +20,7 @@ Arguments:
           [possible values: abi, bytecode, deployedBytecode, assembly,
           legacyAssembly, assemblyOptimized, methodIdentifiers, gasEstimates,
           storageLayout, devdoc, ir, irOptimized, metadata, userdoc, ewasm,
-          errors, events, eof, eof-init]
+          errors, events, standardJson, libraries]
 
 Options:
   -h, --help
@@ -30,7 +30,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Cache options:
       --force
@@ -42,9 +42,6 @@ Build options:
 
       --dynamic-test-linking
           Enable dynamic test linking
-
-      --eof
-          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -61,8 +58,20 @@ Compiler options:
       --ignored-error-codes <ERROR_CODES>
           Ignore solc warnings by error code
 
-      --deny-warnings
-          Warnings will trigger a compiler error
+  -D, --deny <LEVEL>
+          A compiler error will be triggered at the specified diagnostic level.
+          
+          Replaces the deprecated `--deny-warnings` flag.
+          
+          Possible values: - `never`: Do not treat any diagnostics as errors. -
+          `warnings`: Treat warnings as errors. - `notes`: Treat both, warnings
+          and notes, as errors.
+
+          Possible values:
+          - never:    Always exit with zero code
+          - warnings: Exit with a non-zero code if any warnings are found
+          - notes:    Exit with a non-zero code if any notes or warnings are
+            found
 
       --no-auto-detect
           Do not auto-detect the `solc` version
@@ -166,7 +175,7 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: hh]
+          [aliases: --hh]
 
       --config-path <FILE>
           Path to the config file
@@ -175,6 +184,9 @@ Display options:
   -s, --strip-yul-comments
           Whether to remove comments when inspecting `ir` and `irOptimized`
           artifact fields
+
+  -w, --wrap
+          Whether to wrap the table to the terminal width
 
       --color <COLOR>
           The color of the log messages
@@ -186,6 +198,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -203,5 +218,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

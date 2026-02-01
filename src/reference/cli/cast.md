@@ -19,6 +19,8 @@ Commands:
                          topic0-event, t0e]
   abi-encode             ABI encode the given function argument, excluding the
                          selector [aliases: ae]
+  abi-encode-event       ABI encode an event and its arguments to generate
+                         topics and data [aliases: aee]
   access-list            Create an access list for a transaction [aliases: ac,
                          acl]
   address-zero           Prints the zero address [aliases: --address-zero, az]
@@ -26,6 +28,8 @@ Commands:
   age                    Get the timestamp of a block [aliases: a]
   artifact               Generate an artifact file, that can be used to deploy a
                          contract locally [aliases: ar]
+  b2e-payload            Convert Beacon payload to execution payload [aliases:
+                         b2e]
   balance                Get the balance of an account in wei [aliases: b]
   base-fee               Get the basefee of a block [aliases: ba, fee, basefee]
   bind                   Generate a rust binding from a given ABI [aliases: bi]
@@ -51,11 +55,12 @@ Commands:
                          [aliases: c2]
   creation-code          Download a contract creation code from Etherscan and
                          RPC [aliases: cc]
+  da-estimate            Estimates the data availability size of a given opstack
+                         block
   decode-abi             Decode ABI-encoded input or output data [aliases:
                          abi-decode, --abi-decode, ad]
   decode-calldata        Decode ABI-encoded input data [aliases:
                          calldata-decode, --calldata-decode, cdd]
-  decode-eof             Decodes EOF container bytes
   decode-error           Decode custom error data [aliases: error-decode,
                          --error-decode, erd]
   decode-event           Decode event data [aliases: event-decode,
@@ -66,6 +71,7 @@ Commands:
                          [aliases: dt, decode-tx]
   disassemble            Disassembles a hex-encoded bytecode into a
                          human-readable representation [aliases: da]
+  erc20-token            ERC20 token operations [aliases: erc20]
   estimate               Estimate the gas cost of a transaction [aliases: e]
   find-block             Get the block number closest to the provided timestamp
                          [aliases: f]
@@ -83,7 +89,6 @@ Commands:
   from-wei               Convert wei into an ETH amount [aliases: --from-wei,
                          fw]
   gas-price              Get the current gas price [aliases: g]
-  generate-fig-spec      Generate Fig autocompletion spec [aliases: fig]
   hash-message           Hash a message according to EIP-191 [aliases:
                          --hash-message, hm]
   hash-zero              Prints the zero hash [aliases: --hash-zero, hz]
@@ -111,6 +116,7 @@ Commands:
   mktx                   Build and sign a transaction [aliases: m]
   namehash               Calculate the ENS namehash of a name [aliases: na, nh]
   nonce                  Get the nonce for an account [aliases: n]
+  pad                    Pads hex data to a specified length [aliases: pd]
   parse-bytes32-address  Parses a checksummed address from bytes32 encoding.
                          [aliases: --parse-bytes32-address]
   parse-bytes32-string   Parses a string from bytes32 encoding [aliases:
@@ -123,6 +129,8 @@ Commands:
   publish                Publish a raw transaction to the network [aliases: p]
   receipt                Get the transaction receipt for a transaction [aliases:
                          re]
+  recover-authority      Recovery an EIP-7702 authority from a Authorization
+                         JSON string [aliases: decode-auth]
   resolve-name           Perform an ENS lookup [aliases: rn]
   rpc                    Perform a raw JSON-RPC request [aliases: rp]
   run                    Runs a published transaction in a local environment and
@@ -169,6 +177,7 @@ Commands:
                          tu8, 2u8]
   to-wei                 Convert an ETH amount to wei [aliases: --to-wei, tw,
                          2w]
+  trace                  CLI arguments for `cast trace`
   tx                     Get information about a transaction [aliases: t]
   tx-pool                Inspect the TxPool of a node [aliases: tp]
   upload-signature       Upload the given signatures to <https://openchain.xyz>
@@ -183,7 +192,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
   -V, --version
           Print version
@@ -199,6 +208,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -216,8 +228,8 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 
-Find more information in the book:
-http://book.getfoundry.sh/reference/cast/cast.html
+Find more information in the book: https://getfoundry.sh/cast/overview
 ```

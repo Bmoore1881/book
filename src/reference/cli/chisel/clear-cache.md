@@ -14,7 +14,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
   -h, --help
           Print help (see a summary with '-h')
@@ -33,13 +33,17 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 
   -q, --quiet
           Do not print log messages
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
       --color <COLOR>
           The color of the log messages

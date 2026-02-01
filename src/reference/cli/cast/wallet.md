@@ -14,6 +14,7 @@ Commands:
   new-mnemonic      Generates a random BIP39 mnemonic phrase [aliases: nm]
   vanity            Generate a vanity address [aliases: va]
   address           Convert a private key to an address [aliases: a, addr]
+  derive            Derive accounts from a mnemonic [aliases: d]
   sign              Sign a message or typed data [aliases: s]
   sign-auth         EIP-7702 sign authorization [aliases: sa]
   verify            Verify the signature of a message [aliases: v]
@@ -36,7 +37,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>
@@ -49,6 +50,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -66,5 +70,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

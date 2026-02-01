@@ -24,18 +24,18 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
       --target-contract <CONTRACT_NAME>
           The name of the contract you want to run
           
-          [aliases: tc]
+          [aliases: --tc]
 
   -s, --sig <SIG>
           The signature of the function you want to call in the contract, or raw
           calldata
           
-          [default: run()]
+          [default: run]
 
       --priority-gas-price <PRICE>
           Max priority fee per gas for EIP1559 transactions
@@ -67,8 +67,7 @@ Options:
           [default: 130]
 
       --unlocked
-          Send via `eth_sendTransaction` using the `--from` argument or
-          `$ETH_FROM` as sender
+          Send via `eth_sendTransaction` using the `--sender` argument as sender
 
       --resume
           Resumes submitting transactions that failed or timed-out previously.
@@ -101,6 +100,12 @@ Options:
           
           For more info on the contract size limit, see EIP-170:
           <https://eips.ethereum.org/EIPS/eip-170>
+
+      --disable-code-size-limit
+          Disables the contract size limit during script execution
+
+      --disable-labels
+          Disables the labels in the traces
 
       --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -141,13 +146,17 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 
   -q, --quiet
           Do not print log messages
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
       --color <COLOR>
           The color of the log messages
@@ -168,9 +177,6 @@ Build options:
       --dynamic-test-linking
           Enable dynamic test linking
 
-      --eof
-          Whether to compile contracts to EOF bytecode
-
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
           
@@ -186,8 +192,20 @@ Compiler options:
       --ignored-error-codes <ERROR_CODES>
           Ignore solc warnings by error code
 
-      --deny-warnings
-          Warnings will trigger a compiler error
+  -D, --deny <LEVEL>
+          A compiler error will be triggered at the specified diagnostic level.
+          
+          Replaces the deprecated `--deny-warnings` flag.
+          
+          Possible values: - `never`: Do not treat any diagnostics as errors. -
+          `warnings`: Treat warnings as errors. - `notes`: Treat both, warnings
+          and notes, as errors.
+
+          Possible values:
+          - never:    Always exit with zero code
+          - warnings: Exit with a non-zero code if any warnings are found
+          - notes:    Exit with a non-zero code if any notes or warnings are
+            found
 
       --no-auto-detect
           Do not auto-detect the `solc` version
@@ -291,23 +309,21 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: hh]
+          [aliases: --hh]
 
       --config-path <FILE>
           Path to the config file
 
 Wallet options - raw:
-  -a, --froms [<ADDRESSES>...]
-          The sender accounts
-          
-          [env: ETH_FROM=]
-
-  -i, --interactives <NUM>
+      --interactives <NUM>
           Open an interactive prompt to enter your private key.
           
           Takes a value for the number of keys to enter.
           
           [default: 0]
+
+  -i, --interactive
+          Open an interactive prompt to enter your private key
 
       --private-keys <RAW_PRIVATE_KEYS>
           Use the provided private keys
@@ -338,14 +354,14 @@ Wallet options - keystore:
           Use the keystore by its filename in the given folder
           
           [env: ETH_KEYSTORE=]
-          [aliases: keystores]
+          [aliases: --keystores]
 
       --account <ACCOUNT_NAMES>
           Use a keystore from the default keystores folder
           (~/.foundry/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
-          [aliases: accounts]
+          [aliases: --accounts]
 
       --password <PASSWORDS>
           The keystore password.
@@ -368,7 +384,38 @@ Wallet options - hardware wallet:
 
 Wallet options - remote:
       --aws
-          Use AWS Key Management Service
+          Use AWS Key Management Service.
+          
+          Ensure either one of AWS_KMS_KEY_IDS (comma-separated) or
+          AWS_KMS_KEY_ID environment variables are set.
+
+      --gcp
+          Use Google Cloud Key Management Service.
+          
+          Ensure the following environment variables are set: GCP_PROJECT_ID,
+          GCP_LOCATION, GCP_KEY_RING, GCP_KEY_NAME, GCP_KEY_VERSION.
+          
+          See: <https://cloud.google.com/kms/docs>
+
+      --turnkey
+          Use Turnkey.
+          
+          Ensure the following environment variables are set:
+          TURNKEY_API_PRIVATE_KEY, TURNKEY_ORGANIZATION_ID, TURNKEY_ADDRESS.
+          
+          See: <https://docs.turnkey.com/getting-started/quickstart>
+
+Wallet options - browser:
+      --browser
+          Use a browser wallet
+
+      --browser-port <PORT>
+          Port for the browser wallet server
+          
+          [default: 9545]
+
+      --browser-disable-open
+          Whether to open the browser for wallet connection
 
 EVM options:
   -f, --fork-url <URL>
@@ -378,7 +425,7 @@ EVM options:
           If you want to fetch state from a specific block number, see
           --fork-block-number.
           
-          [aliases: rpc-url]
+          [aliases: --rpc-url]
 
       --fork-block-number <BLOCK>
           Fetch state from a specific block number over a remote endpoint.
@@ -437,7 +484,7 @@ Fork config:
           See also --fork-url and
           <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
           
-          [aliases: no-rate-limit]
+          [aliases: --no-rate-limit]
 
 Executor environment config:
       --code-size-limit <CODE_SIZE>
@@ -447,7 +494,7 @@ Executor environment config:
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
-          [aliases: chain-id]
+          [aliases: --chain-id]
 
       --gas-price <GAS_PRICE>
           The gas price
@@ -455,7 +502,7 @@ Executor environment config:
       --block-base-fee-per-gas <FEE>
           The base fee in a block
           
-          [aliases: base-fee]
+          [aliases: --base-fee]
 
       --tx-origin <ADDRESS>
           The transaction origin
@@ -475,10 +522,10 @@ Executor environment config:
       --block-prevrandao <PREVRANDAO>
           The block prevrandao value. NOTE: Before merge this field was mix_hash
 
-      --block-gas-limit <GAS_LIMIT>
+      --block-gas-limit <BLOCK_GAS_LIMIT>
           The block gas limit
           
-          [aliases: gas-limit]
+          [aliases: --gas-limit]
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
@@ -489,16 +536,18 @@ Executor environment config:
       --disable-block-gas-limit
           Whether to disable the block gas limit checks
           
-          [aliases: no-gas-limit]
+          [aliases: --no-block-gas-limit, --no-gas-limit]
+
+      --enable-tx-gas-limit
+          Whether to enable tx gas limit checks as imposed by Osaka (EIP-7825)
+          
+          [aliases: --tx-gas-limit]
 
       --isolate
           Whether to enable isolation of calls. In isolation mode all top-level
           calls are executed as a separate transaction in a separate EVM
           context, enabling more precise gas accounting and transaction state
           changes
-
-      --odyssey
-          Whether to enable Odyssey features
 
       --retries <RETRIES>
           Number of attempts for retrying verification
@@ -513,8 +562,6 @@ Executor environment config:
 Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
-          
-          [default: sourcify]
 
           Possible values:
           - etherscan
@@ -523,6 +570,8 @@ Verifier options:
           - oklink
           - custom:     Custom verification provider, requires compatibility
             with the Etherscan API
+          
+          [default: sourcify]
 
       --verifier-api-key <VERIFIER_API_KEY>
           The verifier API KEY, if using a custom provider

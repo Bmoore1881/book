@@ -62,13 +62,11 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
-          
-          [default: sourcify]
 
           Possible values:
           - etherscan
@@ -77,6 +75,8 @@ Verifier options:
           - oklink
           - custom:     Custom verification provider, requires compatibility
             with the Etherscan API
+          
+          [default: sourcify]
 
       --verifier-api-key <VERIFIER_API_KEY>
           The verifier API KEY, if using a custom provider
@@ -100,6 +100,9 @@ Display options:
       --json
           Format log messages as JSON
 
+      --md
+          Format log messages as Markdown
+
   -q, --quiet
           Do not print log messages
 
@@ -116,5 +119,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

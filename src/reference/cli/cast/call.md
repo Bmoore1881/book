@@ -32,11 +32,20 @@ Options:
           Forks the remote rpc, executes the transaction locally and prints a
           trace
 
+      --disable-labels
+          Disables the labels in the traces. Can only be set with `--trace`
+
       --debug
           Opens an interactive debugger. Can only be used with `--trace`
 
       --decode-internal
+          Identify internal functions in traces.
           
+          This will trace internal functions and decode stack parameters.
+          
+          Parameters stored in memory (such as bytes or arrays) are currently
+          decoded only when a single function is matched, similarly to
+          `--debug`, for performance reasons.
 
       --labels <LABELS>
           Labels to apply to the traces; format: `address:label`. Can only be
@@ -50,9 +59,6 @@ Options:
           
           Can also be the tags earliest, finalized, safe, latest, or pending.
 
-      --odyssey
-          Enable Odyssey features
-
   -h, --help
           Print help (see a summary with '-h')
 
@@ -60,7 +66,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
@@ -97,10 +103,16 @@ Transaction options:
           This is automatically enabled for common networks without EIP1559.
 
       --blob
-          Send a EIP-4844 blob transaction
+          Send a blob transaction using EIP-7594 (PeerDAS) format.
+          
+          Note: Use with `--eip4844` for the legacy EIP-4844 format.
+
+      --eip4844
+          Send a blob transaction using EIP-4844 (legacy) format instead of
+          EIP-7594. Must be used with `--blob`
 
       --blob-gas-price <BLOB_PRICE>
-          Gas price for EIP-4844 blob transaction
+          Gas price for EIP-7594/EIP-4844 blob transaction
           
           [env: ETH_BLOB_GAS_PRICE=]
 
@@ -116,11 +128,46 @@ Transaction options:
           the access list via an RPC call to `eth_createAccessList`. To retrieve
           only the access list portion, use the `cast access-list` command.
 
-Ethereum options:
+Tempo:
+      --tempo.fee-token <FEE_TOKEN>
+          Fee token address for Tempo transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction that pays gas fees in
+          the specified token.
+          
+          If this is not set, the fee token is chosen according to network
+          rules. See the Tempo docs for more information.
+
+      --tempo.seq <SEQUENCE_KEY>
+          Nonce sequence key for Tempo transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction with the specified
+          nonce sequence key.
+          
+          If this is not set, the protocol sequence key (0) will be used.
+          
+          For more information see
+          <https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces>.
+
+Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -160,15 +207,8 @@ Ethereum options:
           
           [env: ETH_RPC_HEADERS=]
 
-  -e, --etherscan-api-key <KEY>
-          The Etherscan (or equivalent) API key
-          
-          [env: ETHERSCAN_API_KEY=]
-
-  -c, --chain <CHAIN>
-          The chain name or EIP-155 chain ID
-          
-          [env: CHAIN=]
+      --curl
+          Print the equivalent curl command instead of making the RPC request
 
 Wallet options - raw:
   -f, --from <ADDRESS>
@@ -200,10 +240,37 @@ Wallet options - raw:
           
           [default: 0]
 
+  -c, --chain <CHAIN>
+          [env: CHAIN=]
+
       --with-local-artifacts
           Use current project artifacts for trace decoding
           
-          [aliases: la]
+          [aliases: --la]
+
+      --override-balance <ADDRESS:BALANCE>
+          Override the accounts balance. Format:
+          "address:balance,address:balance"
+
+      --override-nonce <ADDRESS:NONCE>
+          Override the accounts nonce. Format: "address:nonce,address:nonce"
+
+      --override-code <ADDRESS:CODE>
+          Override the accounts code. Format: "address:code,address:code"
+
+      --override-state <ADDRESS:SLOT:VALUE>
+          Override the accounts state and replace the current state entirely
+          with the new one. Format: "address:slot:value,address:slot:value"
+
+      --override-state-diff <ADDRESS:SLOT:VALUE>
+          Override the accounts state specific slots and preserve the rest of
+          the state. Format: "address:slot:value,address:slot:value"
+
+      --block.time <TIME>
+          Override the block timestamp
+
+      --block.number <NUMBER>
+          Override the block number
 
 Wallet options - keystore:
       --keystore <PATH>
@@ -238,7 +305,37 @@ Wallet options - hardware wallet:
 
 Wallet options - remote:
       --aws
-          Use AWS Key Management Service
+          Use AWS Key Management Service.
+          
+          Ensure the AWS_KMS_KEY_ID environment variable is set.
+
+      --gcp
+          Use Google Cloud Key Management Service.
+          
+          Ensure the following environment variables are set: GCP_PROJECT_ID,
+          GCP_LOCATION, GCP_KEY_RING, GCP_KEY_NAME, GCP_KEY_VERSION.
+          
+          See: <https://cloud.google.com/kms/docs>
+
+      --turnkey
+          Use Turnkey.
+          
+          Ensure the following environment variables are set:
+          TURNKEY_API_PRIVATE_KEY, TURNKEY_ORGANIZATION_ID, TURNKEY_ADDRESS.
+          
+          See: <https://docs.turnkey.com/getting-started/quickstart>
+
+Wallet options - browser:
+      --browser
+          Use a browser wallet
+
+      --browser-port <PORT>
+          Port for the browser wallet server
+          
+          [default: 9545]
+
+      --browser-disable-open
+          Whether to open the browser for wallet connection
 
 Display options:
       --color <COLOR>
@@ -251,6 +348,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -268,5 +368,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```
